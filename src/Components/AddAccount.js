@@ -1,11 +1,26 @@
 import React from 'react'
 import { Form, Col, Row, Container, Button, Table } from 'react-bootstrap'
+import { connect} from 'react-redux'
+import  {addNewAccount}  from './redux/actions/CatActions'
+import { Link } from 'react-router-dom'
 
-class AccountFrom extends React.Component{
+class AddAccount extends React.Component{
+
+    addAccount = (event)=>{
+        event.preventDefault()
+        let account = {
+            id: Math.random().toString(36).substr(2, 5),
+            accountName:event.target.elements.accountName.value,
+            accountNumber:event.target.elements.accountNumber.value,
+            bankName:event.target.elements.bankName.value,
+            bankBranch:event.target.elements.bankBranch.value,
+        }
+        this.props.addNewAccount(account)
+        //this.props.history.push('/')
+    }
 
         render(){
-            const  {AccountName, AccountNumber, BankBranch, BankName, 
-                refresh, updateAccount, addAccount, handleChange} = this.props
+           
             return(
                 <div>
 
@@ -13,15 +28,15 @@ class AccountFrom extends React.Component{
                     <Row>
 
                         <Col  lg={{offset: 3 }} >
-                            <Form>
+                            <Form onSubmit={this.addAccount}>
                                 <Form.Group as={Row} controlId="AccountName">
                                     <Form.Label column lg={2}>
                                         Account Name
                                      </Form.Label>
                                     <Col lg={4}>
-                                        <Form.Control type="text" name="AccountName"
-                                            value={AccountName} placeholder="Account Name"
-                                            onChange={handleChange} />
+                                        <Form.Control type="text" name="accountName"
+                                             placeholder="Account Name"
+                                             />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} controlId="anumber">
@@ -29,9 +44,9 @@ class AccountFrom extends React.Component{
                                         Account Number
                                 </Form.Label>
                                     <Col lg={4}>
-                                        <Form.Control type="text" name="AccountNumber"
-                                            value={AccountNumber} placeholder="Account Number"
-                                            onChange={handleChange} />
+                                        <Form.Control type="text" name="accountNumber"
+                                         placeholder="Account Number"
+                                            />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} controlId="bname">
@@ -39,9 +54,9 @@ class AccountFrom extends React.Component{
                                         Bank Name
                                 </Form.Label>
                                     <Col lg={4}>
-                                        <Form.Control type="text" name="BankName"
-                                            value={BankName} placeholder="Bank Name"
-                                            onChange={handleChange} />
+                                        <Form.Control type="text" name="bankName"
+                                             placeholder="Bank Name"
+                                            />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} controlId="bbranch">
@@ -49,27 +64,18 @@ class AccountFrom extends React.Component{
                                         Bank Branch
                               </Form.Label>
                                     <Col lg={4}>
-                                        <Form.Control type="text" name="BankBranch"
-                                            value={BankBranch} placeholder="Bank Branch"
-                                            onChange={handleChange} />
+                                        <Form.Control type="text" name="bankBranch"
+                                             placeholder="Bank Branch"
+                                             />
                                     </Col>
                                 </Form.Group>
-
+                                <Col className="d-flex justify-content-center">
+                            <Button variant="primary" type="submit">Add Account</Button>
+                        </Col>
                             </Form>
                         </Col>
 
                     </Row>
-                </Container>
-                <Container>
-                    <Row>
-                        <Col className="d-flex justify-content-center">
-                            <Button variant="primary" onClick={addAccount}>Add Account</Button>
-                            <Button variant="success" onClick={addAccount}>Update</Button>
-                            <Button variant="secondary" onClick={refresh}>Refresh</Button>
-
-                        </Col>
-                    </Row>
-                   
                 </Container>
 
 
@@ -81,4 +87,9 @@ class AccountFrom extends React.Component{
         
 }
 
-export default AccountFrom;
+const mapDispatchToProps = {
+    addNewAccount
+}
+
+
+export default connect(null, mapDispatchToProps)(AddAccount)
