@@ -105,7 +105,7 @@ class EditAccount extends React.Component {
 
 const mapStateToProps = (state)=> {
     return {
-        accounts: state
+        accounts: state.accounts
     }
 }
 

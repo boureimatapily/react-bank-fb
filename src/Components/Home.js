@@ -4,10 +4,13 @@ import trash from './icons/icons/trash.svg'
 import { Form, Col, Row, Container, Button, Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { connect} from 'react-redux'
-import { deleteAccount } from './redux/actions/CatActions'
+import { deleteAccount, getAllAccounts} from './redux/actions/CatActions'
 import AddAccount from './AddAccount'
 
 class Home extends Component {
+    componentDidMount(){
+        this.props.getAllAccounts()
+    }
     deleteAccounts = (id)=>{
         this.props.deleteAccount(id)
     }
@@ -73,9 +76,9 @@ class Home extends Component {
 const mapStateToProps = (state)=>{
     console.log(state)
     return {
-        accounts: state
+        accounts: state.accounts
     }
 }
 
 
-export default connect(mapStateToProps, {deleteAccount})(Home);
+export default connect(mapStateToProps, {deleteAccount, getAllAccounts})(Home);

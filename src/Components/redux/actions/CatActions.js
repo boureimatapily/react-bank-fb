@@ -2,11 +2,13 @@ export const addNewAccount = (account)=>{
 
     return async(dispatch, getState,getFirestore)=>{
         let firestore = getFirestore()
+        console.log(account)
         try {
             await firestore.collection("banks").add({
-                ...account, timestamp: firestore.fieldValue.serverTimestamp()})
+                ...account,timestamp: firestore.FieldValue.serverTimestamp()})
+                console.log("done")
         } catch (error) {
-            
+            console.log("error",error)
         }
        
         // dispatch({
@@ -54,24 +56,25 @@ export const editAccount = (account)=>{
 }}
 
 
-export const getAllAccounts = (account)=>{
-
+export const getAllAccounts = ()=>{
     return (dispatch, getState,getFirestore)=>{
         let firestore = getFirestore()
         try {
             firestore
             .collection("banks")
             .orderBy("timestamp", "asc")
-            .onSnapshot(account.id)
-            .set(account)
-
+            .onSnapshot((snapshot)=>{
+                let accounts = snapshot.docs.map((doc)=>{
+                    return {
+                        ...doc.data(),
+                        id: doc.id
+                    }
+                })
+                        dispatch({type:"UPDATE_ALL_ACCOUNTS", payload:accounts })
+            })
         } catch (error) {
             
-        }
-        // dispatch({
-        //     type:"ADD_ACCOUNT",
-        //     payload:account
-        // })
+        } 
     }
 }
  
